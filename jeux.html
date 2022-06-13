@@ -1,0 +1,151 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capchat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="bundle.js" onload="jeu()">
+
+    </script>
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col">
+            <nav class="nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active " aria-current="page" href="jeux.html">Nouveau</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="main.html">Cap’Chat</a>
+                    </li>
+                </ul>
+        </div>
+        <div class="col-9"></div>
+        <div class="col">
+            <ul class="nav">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">Deconnexion</button>
+                </li>
+
+            </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form class="row g-3">
+                <div class="col-auto">
+                    <label for="staticEmail2" class="fs-4">1. Donnez un nom à votre jeu :</label>
+
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" id="nomJeu" placeholder="Nom du jeu">
+
+                </div>
+            </form>
+        </div>
+        <!-- <div class="row">
+            <form class="row g-3">
+                <div class="col-auto">
+                    <label for="staticEmail2" class="fs-4">2. Déposez vos images neutres :</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" type="file" id="img_neutral" multiple>
+                    <label for="formFileMultiple" class="form-label"> ↑ Cliquez sur ce bouton !</label>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <form class="row g-3">
+                <div class="col-auto">
+                    <label for="staticEmail2" class="fs-4">3. Déposez votre image singulière :</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" type="file" id="img_singular" multiple>
+                    <label for="formFileMultiple" class="form-label"> ↑ Cliquez sur ce bouton !</label>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <form class="row g-3">
+                <div class="col-auto">
+                    <label for="staticEmail2" class="fs-4">4. Donnez un indice ou une question :</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" id="clueJeu">
+                </div>
+                <div class="col-auto">
+                </div>
+            </form> -->
+
+
+        <!-- </div> -->
+        <div class="row">
+            <form class="row g-3">
+                <div class="col-auto">
+                    <label for="staticEmail2" class="fs-4">2. Donnez un theme à votre jeu :</label>
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" aria-label="Default select example" id="listetheme">
+                        <option selected>Liste des themes</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                </div>
+            </form>
+
+
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary mb-3" onclick="SetJeu()">Créer un jeu</button>
+        </div>
+    </div>
+
+<div class="container">
+<div class="listejeu container row" id="listejeu" >
+    
+</div>
+</div>
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Deconnexion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <a>Etes vous sûr de vouloir vous déconnecter ?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="Deconnexion()">Oui</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                        aria-label="Close">Non</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

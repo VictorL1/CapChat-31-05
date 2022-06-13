@@ -1,0 +1,85 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capchat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="jauge-css/mes-styles.css">
+<link rel="stylesheet" href="jauge-css/les-styles.css">
+    <script src="bundle.js"></script>
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col">
+            <nav class="nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active " aria-current="page" href="jeux.html">Nouveau</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="main.html">Cap’Chat</a>
+                    </li>
+                </ul>
+        </div>
+        <div class="col-9"></div>
+        <div class="col">
+            <ul class="nav">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">Deconnexion</button>
+                </li>
+
+            </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <p class="fs-1 text-center">Bienvenue sur Cap'Chat, essayez-donc !</p>
+    </div>
+<div class="container text-center fixed-bottom">
+   
+    <div id="laBarre" class="barre">Thermomètre dynamique</div>		
+			
+			<br />
+			<button class="btn btn-dark" onclick="grandir()">Commencer</button> 	
+        </div>
+</body>
+
+<script>
+    function grandir() {
+        var elem = document.getElementById("laBarre");
+        var largeur = 0;
+        var id = setInterval(progression, 1000);
+
+        function progression() {
+            if (largeur < 35) {
+                largeur++;
+                elem.style.backgroundColor = "#389a2b";
+                elem.style.width = largeur * 21;
+                elem.innerText = largeur + " / 60";
+            } 
+            else if (largeur>=35 && largeur <50){
+                largeur++;
+                elem.style.backgroundColor = "#e6760e"
+                elem.style.width = largeur * 21;
+                elem.innerText = largeur + " / 60";
+            }
+            else if (largeur>=50 && largeur <60){
+                largeur++;
+                elem.style.backgroundColor = "#e01a13"
+                elem.style.width = largeur * 21;
+                elem.innerText = largeur + " / 60";
+            }
+            else {
+                clearInterval(id);
+                elem.innerText = "Echec";
+                location.reload();
+            }
+        }
+    }
+</script>

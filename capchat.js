@@ -14,10 +14,10 @@ app.use(express.urlencoded({
 }));
 
 var sql = mysql.createPool({
-  socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock',
+  //socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock', //Desactiver sous Windows
   host: "localhost",
   user: "root",
-  password: "root",
+  password: "",//Pas de mdp sous Windows --> root sous Mac
   database: "CapChat"
 });
 
@@ -37,8 +37,9 @@ app.post('/connexion', async function (req, res) {
       message: `le nom d'utilisateur ou le mot de passe sont incorrect`
     })
   }
+  
   const token = jwt.sign({
-    id: user.id,
+    id: user.IDartiste,
     username: req.body.username
   }, process.env.SECRET_TOKEN, {
     expiresIn: '12h'
@@ -92,7 +93,7 @@ app.get('/artiste', function (req, res) {
 
   sql.query('SELECT * from artiste', function (err, rows) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.json(rows);
   });
@@ -104,7 +105,7 @@ app.get('/artiste/:userId', function (req, res) {
 
   sql.query(`SELECT * from artiste WHERE IDartiste = ${req.params.userId}`, function (err, rows) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.json(rows);
   });
@@ -115,7 +116,7 @@ app.post('/artiste/', function (req, res) {
 
   sql.query(`INSERT INTO artiste (NomArtiste, MDP) VALUES ('${req.body.Nom}','${req.body.Mdp}')`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
@@ -125,7 +126,7 @@ app.put('/artiste', function (req, res) {
 
   sql.query(`UPDATE artiste SET NomArtiste = '${req.body.Nom}' , MDP = '${req.body.Mdp}' WHERE IDartiste = '${req.body.id}'`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
@@ -134,94 +135,95 @@ app.put('/artiste', function (req, res) {
 app.delete('/artiste', function (req, res) {
   sql.query(`DELETE FROM artiste WHERE IDartiste = '${req.body.id}'`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
 })
 
-app.get('/theme', function (req, res) {
+app.get('/theme',authenticateToken, function (req, res) {
 
 
   sql.query('SELECT * from theme', function (err, rows) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.json(rows);
   });
 
 })
 
-app.get('/jeu', function (req, res) {
+app.get('/jeu', authenticateToken, function (req, res) {
 
 
   sql.query('SELECT * from jeu', function (err, rows) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.json(rows);
   });
 
 })
 
-app.post('/jeu/', function (req, res) {
-
-  sql.query(`INSERT INTO jeu (NomJeu, urlJeu) VALUES ('${req.body.Nom}','${req.body.url}')`, function (err) {
+app.post('/jeu/', authenticateToken, function (req, res) {
+  const Iduser = getIdUser(req);
+  console.log(Iduser);
+  sql.query(`INSERT INTO jeu (NomJeu, IdArtiste) VALUES ('${req.body.Nom}','${Iduser.id}')`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
 })
 
-app.put('/jeu/:id', function (req, res) {
+app.put('/jeu/:id',authenticateToken, function (req, res) {
 
   sql.query(`UPDATE jeu SET NomJeu = '${req.body.Nom}' , urlJeu = '${req.body.url}' WHERE IDJeu = '${req.params.id}'`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
 })
 
-app.delete('/jeu', function (req, res) {
+app.delete('/jeu',authenticateToken, function (req, res) {
   sql.query(`DELETE FROM jeu WHERE IDJeu = '${req.body.id}'`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
 })
 
-app.get('/jeu/:Idartist', function (req, res) {
+app.get('/jeu/:Idartist',authenticateToken, function (req, res) {
 
 
   sql.query(`SELECT * from jeu WHERE IdArtiste='${req.params.Idartist}'`, function (err, rows) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.json(rows);
   });
 
 })
 
-app.get('/jeu/:Idtheme', function (req, res) {
+app.get('/jeu/:Idtheme',authenticateToken, function (req, res) {
 
 
   sql.query(`SELECT * from jeu WHERE IdTheme='${req.params.Idtheme}'`, function (err, rows) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.json(rows);
   });
 
 })
 
-app.put('/image/:id', function (req, res) {
+app.put('/image/:id',authenticateToken, function (req, res) {
 
   sql.query(`UPDATE image SET TexteQuestion = '${req.body.txt}' WHERE IDimage = '${req.params.id}'`, function (err) {
     if (err) {
-      res.status(400).end(JSON.stringify(err));
+      res.status(400).json(err);
     }
     res.status(200).end();
   })
@@ -275,3 +277,46 @@ function authenticateToken(req, res, next) {
 app.listen(port, () => {
   console.log(`http://localhost:${port}`)
 })
+
+function getIdUser(req) {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const decoded = jwt.decode(token, {
+      complete: false
+  })
+  return decoded
+}
+function extractBearerToken(headerValue) {
+  if (typeof headerValue !== 'string') {
+      return false
+  }
+
+  const matches = headerValue.match(/(bearer)\s+(\S+)/i)
+  return matches && matches[2]
+}
+
+app.post('/nouveau-jeu', async function (req, res) {
+const iduser = getIdUser(req);
+console.log(req.body.NomJeu, iduser.id, req.body.theme);
+  await setJeu(req.body.NomJeu, iduser.id, req.body.theme)
+    .then(
+      data => {
+      res.end();
+      }
+    )
+    .catch(
+      err => {
+        return res.status(400).json({
+          message: `erreur : ${err}`
+        });
+      }
+    );
+})
+
+function setJeu(NomJeu, IdArtiste, IdTheme) {
+  return new Promise((resolve, reject) => {
+    sql.query(`INSERT INTO jeu(NomJeu, IdArtiste, IdTheme) VALUES ('${NomJeu}','${IdArtiste}','${IdTheme}')`, function (err, rows) {
+      if (err) return reject(err);
+      return resolve(rows);
+    })
+  })
+}
