@@ -4,20 +4,22 @@ const port = 3000
 var mysql = require('mysql');
 const fs = require('fs');
 const crypto = require('crypto');
+const fileUpload = require('express-fileupload')
 const jwt = require('jsonwebtoken');
 var app = express();
 require('dotenv').config();
 app.use(cors())
 app.use(express.json());
+app.use(fileUpload());
 app.use(express.urlencoded({
   extended: true
 }));
 
 var sql = mysql.createPool({
-  //socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock', //Desactiver sous Windows
+  socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock', //Desactiver sous Windows
   host: "localhost",
   user: "root",
-  password: "",//Pas de mdp sous Windows --> root sous Mac
+  password: "root",//Pas de mdp sous Windows --> root sous Mac
   database: "CapChat"
 });
 
@@ -319,4 +321,51 @@ function setJeu(NomJeu, IdArtiste, IdTheme) {
       return resolve(rows);
     })
   })
+}
+
+app.get('/getDessin/:idJeu', authenticateToken, async function(req, res) {
+  await getDessin(req.params.idJeu)
+  .then(
+      data => {
+          const reponse = convertBuffObjectToString(data);
+          res.json(reponse);
+      }
+  )
+  .catch(
+      err => {
+          return res.status(400).json(err);
+      }
+  )
+})
+
+function getDessin(idJeu) {
+  return new Promise((resolve, reject) => {
+      sql.query(`
+          SELECT image.IDimage AS id, img_blob, TexteQuestion, ImageSinguliere, image.IdJeu FROM image 
+          INNER JOIN jeu ON image.IdJeu = jeu.IDJeu
+          AND image.IdJeu = ${idJeu}
+          ORDER BY image.IDimage DESC`, 
+          function(err, rows) {
+          if (err) return reject(err);
+          return resolve(rows);
+      })
+  })
+}
+
+app.post('/setDessin', authenticateToken, async function(req, res) {
+  const dessin = req.files.dessin.data.toString('base64');
+  console.log(req.body.IDJeu);
+  sql.query(`INSERT INTO image(img_blob, TexteQuestion, IdJeu) VALUES ('${dessin}','${req.body.indice}','${req.body.IDJeu}')`, function (err, rows) {
+  if (err) {
+      return res.status(400).json(err);
+  }
+  res.json("coucou");
+})
+})
+
+function convertBuffObjectToString(data) {
+  for (let i = 0; i < data.length; i++) {
+      data[i].img_blob = data[i].img_blob.toString();
+  }
+  return data
 }

@@ -57,23 +57,23 @@
         var id = setInterval(progression, 1000);
 
         function progression() {
-            if (largeur < 35) {
+            if (largeur < 15) {
                 largeur++;
                 elem.style.backgroundColor = "#389a2b";
-                elem.style.width = largeur * 21;
-                elem.innerText = largeur + " / 60";
+                elem.style.width = largeur * 30;
+                elem.innerText = largeur + " / 30";
             } 
-            else if (largeur>=35 && largeur <50){
+            else if (largeur>=15 && largeur <20){
                 largeur++;
                 elem.style.backgroundColor = "#e6760e"
-                elem.style.width = largeur * 21;
-                elem.innerText = largeur + " / 60";
+                elem.style.width = largeur * 30;
+                elem.innerText = largeur + " / 30";
             }
-            else if (largeur>=50 && largeur <60){
+            else if (largeur>=20 && largeur <30){
                 largeur++;
                 elem.style.backgroundColor = "#e01a13"
-                elem.style.width = largeur * 21;
-                elem.innerText = largeur + " / 60";
+                elem.style.width = largeur * 30;
+                elem.innerText = largeur + " / 30";
             }
             else {
                 clearInterval(id);
